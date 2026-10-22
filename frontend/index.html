@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineAgent AI - Autonomous Movie Ticket Booking System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="cinema-theme">
+  <!-- Top Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="logo-icon">🎬</div>
+        <div class="brand-text">
+          <h1>Cine<span class="gradient-text">Agent</span> AI</h1>
+          <span class="badge agent-badge"><span class="pulse-dot"></span> ReAct Agent Active</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button id="btn-view-tools" class="btn btn-secondary">
+          <span class="icon">⚡</span> Agent Tools (<span id="tools-count-badge">10</span>)
+        </button>
+        <button id="btn-my-bookings" class="btn btn-secondary">
+          <span class="icon">🎟️</span> My Bookings
+        </button>
+        <a href="https://github.com/Chiranth-11/movie-ticket-booking-ai" target="_blank" rel="noopener" class="btn btn-outline github-link">
+          <span class="icon">⭐</span> GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Grid Layout -->
+  <main class="main-layout">
+    <!-- Left Workspace: Movies, Showtimes & Seating Chart -->
+    <section class="cinema-workspace">
+      <!-- Catalog Controls -->
+      <div class="workspace-card catalog-section">
+        <div class="card-header">
+          <div>
+            <h2>Now Showing</h2>
+            <p class="subtitle">Select a film or let CineAgent autonomously pick for you</p>
+          </div>
+          <div class="genre-filters" id="genre-filters">
+            <button class="filter-chip active" data-genre="">All</button>
+            <button class="filter-chip" data-genre="Sci-Fi">Sci-Fi</button>
+            <button class="filter-chip" data-genre="Action">Action</button>
+            <button class="filter-chip" data-genre="Drama">Drama</button>
+            <button class="filter-chip" data-genre="Animation">Animation</button>
+          </div>
+        </div>
+
+        <!-- Movie Grid Carousel -->
+        <div class="movie-grid" id="movie-grid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Showtime Selection -->
+      <div class="workspace-card showtimes-section" id="showtimes-section">
+        <div class="card-header">
+          <div>
+            <h3>Showtimes & Theaters</h3>
+            <p class="subtitle" id="selected-movie-title">Pick a theater and time slot</p>
+          </div>
+          <div class="date-selector" id="date-selector">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+        <div class="showtimes-grid" id="showtimes-grid">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- Interactive Theater Seat Map -->
+      <div class="workspace-card seating-section" id="seating-section">
+        <div class="card-header">
+          <div>
+            <h3>Interactive Seating Hall</h3>
+            <p class="subtitle" id="seating-subtitle">Select your seats or ask CineAgent to auto-recommend</p>
+          </div>
+          <div class="tier-legend">
+            <span class="legend-item"><span class="seat-sample seat-vip"></span> VIP ($22)</span>
+            <span class="legend-item"><span class="seat-sample seat-premium"></span> Premium ($16)</span>
+            <span class="legend-item"><span class="seat-sample seat-standard"></span> Standard ($12)</span>
+            <span class="legend-item"><span class="seat-sample seat-booked"></span> Taken</span>
+          </div>
+        </div>
+
+        <!-- Theater Screen Projection -->
+        <div class="theater-screen-wrapper">
+          <div class="theater-screen">
+            <div class="screen-curve"></div>
+            <span class="screen-label">CURVED THEATER SCREEN</span>
+          </div>
+        </div>
+
+        <!-- Seat Grid -->
+        <div class="seat-grid-container" id="seat-grid-container">
+          <!-- 6 Rows (A-F), 8 Columns (1-8) -->
+        </div>
+
+        <!-- Booking & Pricing Footer -->
+        <div class="seating-summary-footer">
+          <div class="summary-details">
+            <div class="summary-col">
+              <span class="label">Selected Seats:</span>
+              <span class="value" id="summary-seats">None</span>
+            </div>
+            <div class="summary-col">
+              <span class="label">Pricing:</span>
+              <span class="value" id="summary-total">$0.00</span>
+            </div>
+            <div class="summary-col" id="promo-display-col" style="display: none;">
+              <span class="label">Discount:</span>
+              <span class="value discount-tag" id="summary-discount">-$0.00</span>
+            </div>
+          </div>
+          <div class="summary-actions">
+            <button id="btn-quick-recommend" class="btn btn-secondary">
+              ✨ AI Auto-Pick VIP
+            </button>
+            <button id="btn-checkout" class="btn btn-primary" disabled>
+              🎟️ Confirm Booking
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Workspace: CineAgent AI Concierge Chatbot -->
+    <aside class="agent-chat-pane">
+      <div class="chat-card">
+        <!-- Agent Header -->
+        <div class="chat-header">
+          <div class="agent-profile">
+            <div class="agent-avatar">🤖</div>
+            <div class="agent-info">
+              <h3>CineAgent</h3>
+              <p class="agent-status"><span class="pulse-dot"></span> Autonomous ReAct Engine</p>
+            </div>
+          </div>
+          <button id="btn-clear-chat" class="btn-icon" title="Reset Session">🔄</button>
+        </div>
+
+        <!-- Quick Prompts Carousel -->
+        <div class="quick-prompts">
+          <button class="prompt-chip" data-prompt="Recommend a mind-bending sci-fi movie">🎬 Recommend Sci-Fi</button>
+          <button class="prompt-chip" data-prompt="Showtimes for Inception tonight">🕒 Inception Showtimes</button>
+          <button class="prompt-chip" data-prompt="Recommend 2 VIP seats for Inception">🪑 Best 2 VIP Seats</button>
+          <button class="prompt-chip" data-prompt="Apply promo code WELCOME20">🏷️ Apply WELCOME20</button>
+          <button class="prompt-chip" data-prompt="Confirm booking for my selected seats">🎟️ Confirm Booking</button>
+        </div>
+
+        <!-- Messages Stream -->
+        <div class="chat-messages" id="chat-messages">
+          <div class="message-bubble agent-message">
+            <div class="bubble-header">
+              <span class="name">CineAgent</span>
+              <span class="time">Just now</span>
+            </div>
+            <div class="bubble-content">
+              👋 Welcome! I am <strong>CineAgent</strong>, your autonomous Cinema Concierge powered by ReAct AI.<br><br>
+              I can check showtimes, suggest optimal seats, apply promotional discounts, and finalize your booking with digital tickets.<br><br>
+              How can I help you today?
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Agent Thinking Indicator -->
+        <div class="agent-thinking" id="agent-thinking" style="display: none;">
+          <div class="typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="thinking-label">CineAgent is reasoning and executing tools...</span>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form class="chat-input-form" id="chat-input-form">
+          <input 
+            type="text" 
+            id="chat-input" 
+            placeholder="Ask CineAgent anything or say 'Book 2 VIP seats'..." 
+            autocomplete="off"
+            required
+          />
+          <button type="submit" id="btn-send-chat" class="btn btn-primary btn-send">
+            <span>Send</span> ➔
+          </button>
+        </form>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Modal 1: Digital Boarding Pass / Ticket Modal -->
+  <dialog id="modal-ticket" class="custom-dialog">
+    <div class="dialog-content ticket-dialog">
+      <div class="ticket-header">
+        <span class="ticket-logo">🎬 CINEPASS DIGITAL TICKET</span>
+        <button class="btn-close" id="btn-close-ticket">✕</button>
+      </div>
+      
+      <div class="boarding-pass" id="boarding-pass-card">
+        <div class="pass-top">
+          <div class="pass-movie-info">
+            <span class="pass-tag">CONFIRMED RESERVATION</span>
+            <h2 id="ticket-movie-title">Movie Title</h2>
+            <p id="ticket-theater-info">Theater Name • Format</p>
+          </div>
+          <div class="pass-badge" id="ticket-status-badge">ACTIVE</div>
+        </div>
+
+        <div class="pass-grid">
+          <div class="pass-field">
+            <span class="field-label">DATE</span>
+            <span class="field-val" id="ticket-date">2026-10-22</span>
+          </div>
+          <div class="pass-field">
+            <span class="field-label">TIME</span>
+            <span class="field-val" id="ticket-time">07:30 PM</span>
+          </div>
+          <div class="pass-field">
+            <span class="field-label">SEATS</span>
+            <span class="field-val highlight" id="ticket-seats">A3, A4</span>
+          </div>
+          <div class="pass-field">
+            <span class="field-label">GUEST</span>
+            <span class="field-val" id="ticket-guest">Guest</span>
+          </div>
+          <div class="pass-field">
+            <span class="field-label">BOOKING ID</span>
+            <span class="field-val code-font" id="ticket-id">CINE-1022-XXXX</span>
+          </div>
+          <div class="pass-field">
+            <span class="field-label">TOTAL PAID</span>
+            <span class="field-val highlight" id="ticket-price">$47.52</span>
+          </div>
+        </div>
+
+        <div class="pass-barcode-section">
+          <div class="mock-qr" id="mock-qr-code">
+            <!-- SVG QR Code -->
+            <svg width="90" height="90" viewBox="0 0 100 100">
+              <rect width="100" height="100" fill="#0d1117" rx="8" />
+              <rect x="10" y="10" width="30" height="30" fill="#00e5ff" rx="4" />
+              <rect x="15" y="15" width="20" height="20" fill="#0d1117" />
+              <rect x="20" y="20" width="10" height="10" fill="#00e5ff" />
+              <rect x="60" y="10" width="30" height="30" fill="#00e5ff" rx="4" />
+              <rect x="65" y="15" width="20" height="20" fill="#0d1117" />
+              <rect x="70" y="20" width="10" height="10" fill="#00e5ff" />
+              <rect x="10" y="60" width="30" height="30" fill="#00e5ff" rx="4" />
+              <rect x="15" y="65" width="20" height="20" fill="#0d1117" />
+              <rect x="20" y="70" width="10" height="10" fill="#00e5ff" />
+              <rect x="50" y="50" width="15" height="15" fill="#ff007f" rx="2" />
+              <rect x="75" y="65" width="15" height="25" fill="#00e5ff" rx="2" />
+              <rect x="50" y="75" width="15" height="15" fill="#00e5ff" rx="2" />
+            </svg>
+          </div>
+          <div class="barcode-lines">
+            <div class="barcode-graphic"></div>
+            <span class="barcode-text" id="barcode-text">CINE-BOARDING-PASS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket-dialog-actions">
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ Print Ticket</button>
+        <button class="btn btn-primary" id="btn-done-ticket">Done</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 2: My Bookings Modal -->
+  <dialog id="modal-bookings" class="custom-dialog">
+    <div class="dialog-content large-dialog">
+      <div class="dialog-header">
+        <h3>🎟️ Booking History & Active Passes</h3>
+        <button class="btn-close" id="btn-close-bookings">✕</button>
+      </div>
+      <div class="bookings-list" id="bookings-list">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 3: Agent Tools Specification Modal -->
+  <dialog id="modal-tools" class="custom-dialog">
+    <div class="dialog-content large-dialog">
+      <div class="dialog-header">
+        <div>
+          <h3>⚡ CineAgent Tool Registry</h3>
+          <p class="subtitle">Autonomous tools callable by the ReAct engine</p>
+        </div>
+        <button class="btn-close" id="btn-close-tools">✕</button>
+      </div>
+      <div class="tools-spec-grid" id="tools-spec-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Application Scripts -->
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/chat.js"></script>
+</body>
+</html>
