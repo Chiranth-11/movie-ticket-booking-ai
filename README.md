@@ -12,6 +12,7 @@
 ## 🌟 Highlights & Features
 
 - 🤖 **Autonomous ReAct AI Agent**: Real-time multi-turn reasoning with tool execution traces showing exact latency, parameters, and observations.
+- 🇮🇳 **Indian Cinema Blockbusters**: Rich catalog featuring iconic films across languages (Kannada, Telugu, Hindi) including **Kantara**, **RRR**, **K.G.F: Chapter 2**, **3 Idiots**, **Baahubali 2: The Conclusion**, and **Dangal**.
 - 🪑 **Interactive Seating Hall**: Color-coded tiers (VIP Recliners, Premium Center, Standard) with live seat locking, selection summaries, and curved screen visualization.
 - ⚡ **10 Specialized Cinema Tools**: Autonomously invoked by the agent to query movies, compare showtimes, recommend adjacent seats, calculate taxes/discounts, and confirm bookings.
 - 🎟️ **Digital Boarding Pass & QR Code**: Generates printable and downloadable cinema tickets complete with reservation barcodes, seat numbers, and theater credentials.

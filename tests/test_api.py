@@ -35,6 +35,14 @@ class TestAPIEndpoints(unittest.TestCase):
         for m in sci_fi_movies:
             self.assertIn("Sci-Fi", m["genre"])
 
+    def test_filter_indian_movies(self):
+        indian_movies = get_movies(genre="Indian Cinema")
+        self.assertGreaterEqual(len(indian_movies), 6)
+        titles = [m["title"] for m in indian_movies]
+        self.assertIn("Kantara", titles)
+        self.assertIn("RRR", titles)
+        self.assertIn("K.G.F: Chapter 2", titles)
+
     def test_get_movie_detail(self):
         movie = get_movie_detail("mov-inception")
         self.assertEqual(movie["id"], "mov-inception")

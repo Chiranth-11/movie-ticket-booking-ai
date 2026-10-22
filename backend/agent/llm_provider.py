@@ -44,7 +44,20 @@ class AutonomousReasoningEngine:
         "spirited away": "mov-spirited-away",
         "dune": "mov-dune2",
         "dune 2": "mov-dune2",
-        "dune: part two": "mov-dune2"
+        "dune: part two": "mov-dune2",
+        "kantara": "mov-kantara",
+        "rrr": "mov-rrr",
+        "kgf": "mov-kgf2",
+        "kgf 2": "mov-kgf2",
+        "kgf chapter 2": "mov-kgf2",
+        "k.g.f": "mov-kgf2",
+        "3 idiots": "mov-3-idiots",
+        "three idiots": "mov-3-idiots",
+        "idiots": "mov-3-idiots",
+        "baahubali": "mov-baahubali2",
+        "baahubali 2": "mov-baahubali2",
+        "bahubali": "mov-baahubali2",
+        "dangal": "mov-dangal"
     }
 
     @classmethod

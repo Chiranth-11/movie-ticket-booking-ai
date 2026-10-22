@@ -90,18 +90,14 @@ def init_db():
 
     conn.commit()
 
-    # Check if movies are already seeded
-    cursor.execute("SELECT COUNT(*) as count FROM movies")
-    count = cursor.fetchone()["count"]
-    if count == 0:
-        seed_data(conn)
-    else:
-        conn.close()
+    # Seed or synchronize missing movies
+    seed_data(conn)
 
 def seed_data(conn):
     cursor = conn.cursor()
 
     movies_data = [
+        # Western / Global Classics
         {
             "id": "mov-inception",
             "title": "Inception",
@@ -185,19 +181,98 @@ def seed_data(conn):
             "cast": json.dumps(["Timothée Chalamet", "Zendaya", "Rebecca Ferguson", "Javier Bardem"]),
             "release_year": 2024,
             "backdrop_url": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80"
+        },
+
+        # Indian Cinema Masterpieces
+        {
+            "id": "mov-kantara",
+            "title": "Kantara",
+            "genre": json.dumps(["Action", "Drama", "Thriller", "Indian Cinema"]),
+            "language": "Kannada",
+            "duration_mins": 148,
+            "rating": 8.3,
+            "poster_url": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80",
+            "description": "Set in the mystical coastal forests of Karnataka, a rebellious youth must embrace his ancestral deity Bhoota Kola when greed and injustice threaten his sacred clan.",
+            "director": "Rishab Shetty",
+            "cast": json.dumps(["Rishab Shetty", "Sapthami Gowda", "Kishore Kumar G.", "Achyuth Kumar"]),
+            "release_year": 2022,
+            "backdrop_url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+            "id": "mov-rrr",
+            "title": "RRR",
+            "genre": json.dumps(["Action", "Drama", "History", "Indian Cinema"]),
+            "language": "Telugu",
+            "duration_mins": 187,
+            "rating": 8.8,
+            "poster_url": "https://images.unsplash.com/photo-1533613220915-609f661a6fe1?auto=format&fit=crop&w=600&q=80",
+            "description": "A fearless tribal warrior and an intrepid officer in the 1920s British Raj forge an unbreakable bond before fighting side by side in an awe-inspiring liberation epic.",
+            "director": "S.S. Rajamouli",
+            "cast": json.dumps(["N.T. Rama Rao Jr.", "Ram Charan", "Alia Bhatt", "Ajay Devgn"]),
+            "release_year": 2022,
+            "backdrop_url": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+            "id": "mov-kgf2",
+            "title": "K.G.F: Chapter 2",
+            "genre": json.dumps(["Action", "Crime", "Drama", "Indian Cinema"]),
+            "language": "Kannada",
+            "duration_mins": 168,
+            "rating": 8.4,
+            "poster_url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80",
+            "description": "In the blood-soaked Kolar Gold Fields, Rocky's name strikes fear into his foes while he wages war against ruthless rivals, crime syndicates, and the government to retain absolute supremacy.",
+            "director": "Prashanth Neel",
+            "cast": json.dumps(["Yash", "Sanjay Dutt", "Raveena Tandon", "Srinidhi Shetty"]),
+            "release_year": 2022,
+            "backdrop_url": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+            "id": "mov-3-idiots",
+            "title": "3 Idiots",
+            "genre": json.dumps(["Comedy", "Drama", "Indian Cinema"]),
+            "language": "Hindi",
+            "duration_mins": 170,
+            "rating": 8.4,
+            "poster_url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+            "description": "Two friends embark on a hilarious cross-country journey to track down their free-thinking college buddy Rancho, whose unconventional wisdom transformed their lives forever.",
+            "director": "Rajkumar Hirani",
+            "cast": json.dumps(["Aamir Khan", "R. Madhavan", "Sharman Joshi", "Kareena Kapoor"]),
+            "release_year": 2009,
+            "backdrop_url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+            "id": "mov-baahubali2",
+            "title": "Baahubali 2: The Conclusion",
+            "genre": json.dumps(["Action", "Fantasy", "Drama", "Indian Cinema"]),
+            "language": "Telugu",
+            "duration_mins": 167,
+            "rating": 8.2,
+            "poster_url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80",
+            "description": "Amarendra Baahubali upholds justice amidst treacherous royal court conspiracies, while his son Mahendra returns to Mahishmati to avenge his father's demise and claim the throne.",
+            "director": "S.S. Rajamouli",
+            "cast": json.dumps(["Prabhas", "Rana Daggubati", "Anushka Shetty", "Tamannaah Bhatia"]),
+            "release_year": 2017,
+            "backdrop_url": "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+            "id": "mov-dangal",
+            "title": "Dangal",
+            "genre": json.dumps(["Biography", "Drama", "Sport", "Indian Cinema"]),
+            "language": "Hindi",
+            "duration_mins": 161,
+            "rating": 8.3,
+            "poster_url": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80",
+            "description": "Former wrestler Mahavir Singh Phogat overcomes orthodox prejudice by training his daughters Geeta and Babita to triumph at the Commonwealth Games, inspiring a nation.",
+            "director": "Nitesh Tiwari",
+            "cast": json.dumps(["Aamir Khan", "Fatima Sana Shaikh", "Sanya Malhotra", "Sakshi Tanwar"]),
+            "release_year": 2016,
+            "backdrop_url": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=80"
         }
     ]
 
-    for m in movies_data:
-        cursor.execute("""
-        INSERT INTO movies (id, title, genre, language, duration_mins, rating, poster_url, description, director, cast, release_year, backdrop_url)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            m["id"], m["title"], m["genre"], m["language"], m["duration_mins"], m["rating"],
-            m["poster_url"], m["description"], m["director"], m["cast"], m["release_year"], m["backdrop_url"]
-        ))
+    cursor.execute("SELECT id FROM movies")
+    existing_ids = set(r["id"] for r in cursor.fetchall())
 
-    # Theaters and showtimes
     theaters = [
         {"name": "Cineplex Grand IMAX", "screen": "IMAX 3D Laser", "base": 20.0},
         {"name": "Starlight Dolby Cinema", "screen": "Dolby Atmos 4K", "base": 18.0},
@@ -208,36 +283,45 @@ def seed_data(conn):
     dates = [(today + timedelta(days=i)).strftime("%Y-%m-%d") for i in range(3)]
     time_slots = ["11:00 AM", "02:30 PM", "06:15 PM", "09:30 PM"]
 
-    showtimes = []
-    sh_counter = 101
+    cursor.execute("SELECT MAX(CAST(SUBSTR(id, 5) AS INTEGER)) as max_id FROM showtimes")
+    max_sh = cursor.fetchone()["max_id"] or 100
+    sh_counter = max_sh + 1
 
-    for movie in movies_data:
-        for d_idx, d in enumerate(dates[:2]): # Today and Tomorrow
-            for t_idx, theater in enumerate(theaters):
-                slot = time_slots[(sh_counter % len(time_slots))]
-                sh_id = f"sht-{sh_counter}"
-                cursor.execute("""
-                INSERT INTO showtimes (id, movie_id, theater_name, screen_type, screen_number, date, time_slot, base_price)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    sh_id, movie["id"], theater["name"], theater["screen"], (t_idx + 1), d, slot, theater["base"]
-                ))
-                showtimes.append((sh_id, theater["base"]))
-                sh_counter += 1
-
-    # Seed seats for each showtime (Rows A to F, Seats 1 to 8: 48 seats per hall)
-    # Rows A, B: VIP
-    # Rows C, D: Premium
-    # Rows E, F: Standard
+    new_showtimes = []
     rows = ["A", "B", "C", "D", "E", "F"]
-    for sh_id, base_price in showtimes:
+
+    for m in movies_data:
+        if m["id"] not in existing_ids:
+            cursor.execute("""
+            INSERT INTO movies (id, title, genre, language, duration_mins, rating, poster_url, description, director, cast, release_year, backdrop_url)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                m["id"], m["title"], m["genre"], m["language"], m["duration_mins"], m["rating"],
+                m["poster_url"], m["description"], m["director"], m["cast"], m["release_year"], m["backdrop_url"]
+            ))
+
+            # Add showtimes for the new movie
+            for d_idx, d in enumerate(dates[:2]): # Today and Tomorrow
+                for t_idx, theater in enumerate(theaters):
+                    slot = time_slots[(sh_counter % len(time_slots))]
+                    sh_id = f"sht-{sh_counter}"
+                    cursor.execute("""
+                    INSERT INTO showtimes (id, movie_id, theater_name, screen_type, screen_number, date, time_slot, base_price)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        sh_id, m["id"], theater["name"], theater["screen"], (t_idx + 1), d, slot, theater["base"]
+                    ))
+                    new_showtimes.append((sh_id, theater["base"]))
+                    sh_counter += 1
+
+    # Seed seats for newly created showtimes
+    for sh_id, base_price in new_showtimes:
         seat_index = 0
         for row in rows:
             tier = "VIP" if row in ["A", "B"] else ("Premium" if row in ["C", "D"] else "Standard")
             price = SEAT_TIER_PRICING.get(tier, 15.0)
             for num in range(1, 9):
                 seat_id = f"{row}{num}"
-                # Seed some randomly booked seats for realism (e.g. 5-10% booked)
                 status = "booked" if (seat_index + int(sh_id.split("-")[1])) % 7 == 0 else "available"
                 cursor.execute("""
                 INSERT INTO seats (showtime_id, seat_id, row, number, tier, price, status)

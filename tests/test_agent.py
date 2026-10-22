@@ -77,5 +77,16 @@ class TestAgent(unittest.TestCase):
         self.assertIsNotNone(resp.ui_action)
         self.assertEqual(resp.ui_action["type"], "SELECT_SHOWTIME")
 
+    def test_indian_movie_chat_and_showtimes(self):
+        agent = CineAgent()
+        req = ChatRequest(message="What showtimes do you have for Kantara?", session_id="test_kantara_1")
+        resp = agent.chat(req)
+
+        self.assertIsNotNone(resp.reply)
+        self.assertIn("Kantara", resp.reply)
+        self.assertGreater(len(resp.tool_calls), 0)
+        self.assertEqual(resp.tool_calls[0].tool_name, "get_showtimes")
+        self.assertEqual(resp.ui_action["movie_id"], "mov-kantara")
+
 if __name__ == "__main__":
     unittest.main()

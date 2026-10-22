@@ -180,7 +180,7 @@ function renderMovieGrid(movies) {
       <div class="movie-info">
         <h4>${m.title}</h4>
         <div class="movie-meta">
-          <span>${m.release_year}</span> • <span>${m.duration_mins}m</span>
+          <span style="color:var(--accent-cyan); font-weight:600;">${m.language}</span> • <span>${m.release_year}</span> • <span>${m.duration_mins}m</span>
         </div>
         <div class="movie-genres">
           ${m.genre.slice(0, 2).map(g => `<span class="genre-tag">${g}</span>`).join("")}

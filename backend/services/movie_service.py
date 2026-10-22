@@ -17,8 +17,8 @@ class MovieService:
             params.extend([q_wild, q_wild, q_wild])
 
         if genre:
-            sql += " AND LOWER(genre) LIKE ?"
-            params.append(f"%{genre.lower()}%")
+            sql += " AND (LOWER(genre) LIKE ? OR LOWER(language) LIKE ?)"
+            params.extend([f"%{genre.lower()}%", f"%{genre.lower()}%"])
 
         if min_rating is not None:
             sql += " AND rating >= ?"
@@ -143,6 +143,8 @@ class MovieService:
             matched_genres.extend(["Biography", "Drama", "History"])
         if any(w in mood_lower for w in ["calm", "relax", "family", "magic", "spirit", "anime", "beautiful", "kids"]):
             matched_genres.extend(["Animation", "Fantasy", "Family"])
+        if any(w in mood_lower for w in ["indian", "bollywood", "tollywood", "sandalwood", "kannada", "telugu", "hindi", "desi", "pan-india", "south", "mass", "epic", "india"]):
+            matched_genres.extend(["Indian Cinema"])
 
         conn = get_connection()
         cursor = conn.cursor()
